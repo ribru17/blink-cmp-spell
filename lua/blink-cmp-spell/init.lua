@@ -11,10 +11,15 @@ local defaults = {
 local M = {}
 
 function M.new(opts)
-  opts = opts or {}
+  local config = vim.tbl_deep_extend('keep', opts or {}, defaults)
+  vim.validate {
+    max_entries = { config.max_entries, 'number' },
+    enable_in_context = { config.enable_in_context, 'function' },
+  }
+
   return setmetatable({
-    max_entries = opts.max_entries or defaults.max_entries,
-    enable_in_context = opts.enable_in_context or defaults.enable_in_context,
+    max_entries = config.max_entries,
+    enable_in_context = config.enable_in_context,
   }, { __index = M })
 end
 
