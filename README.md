@@ -26,16 +26,17 @@ Neovim's `spellsuggest`.
             -- EXAMPLE: Only enable source in `@spell` captures, and disable it
             -- in `@nospell` captures.
             enable_in_context = function()
-              local captures = vim.treesitter.get_captures_at_cursor(0)
-              local in_spell_capture = false
-              for _, capture in ipairs(captures) do
-                if capture == 'spell' then
-                  in_spell_capture = true
-                elseif capture == 'nospell' then
+              local captures = vim.treesitter.get_captures_at_cursor()
+              for i = #captures, 1, -1 do
+                local capture = captures[i]
+                if capture == "spell" then
+                  return true
+                elseif capture == "nospell" then
                   return false
                 end
               end
-              return in_spell_capture
+
+              return false
             end,
           },
         },
