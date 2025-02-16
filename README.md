@@ -80,6 +80,16 @@ A function that, upon returning false, disables the completion source. This can
 be used to disable the spelling source when in a `@nospell` `treesitter`
 capture.
 
+### `keep_all_entries` (`boolean`, default `false`)
+
+If true, all `vim.fn.spellsuggest` results are displayed in `blink`'s menu. Otherwise,
+they are being filtered to only include fuzzy matches.
+
+### `preselect_correct_word` (`boolean`, default `true`)
+
+If true and the spelling of a word is correct, the word is displayed as the first entry
+and preselected.
+
 ## Shoutout
 
 A huge thank you to @f3fora for the code inspiration from
