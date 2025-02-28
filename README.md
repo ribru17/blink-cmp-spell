@@ -49,7 +49,8 @@ Neovim's `spellsuggest`.
 
 
     -- It is recommended to put the "label" sorter as the primary sorter for the
-    -- spell source
+    -- spell source.
+    -- If you set use_cmp_spell_sorting to true, you may want to skip this step.
     fuzzy = {
       sorts = {
         function(a, b)
@@ -74,11 +75,33 @@ Neovim's `spellsuggest`.
 
 The maximum number of results to be returned from the spellchecker.
 
+### `preselect_current_word` (`boolean`, default `true`)
+
+If true and the spelling of the word is correct, the word is displayed as the first entry
+and preselected.
+
+### `keep_all_entries` (`boolean`, default `false`)
+
+If true, all `vim.fn.spellsuggest` results are displayed in `blink`'s menu. Otherwise,
+they are filtered to only include fuzzy matches.
+
+### `use_cmp_spell_sorting` (`boolean`, default `false`)
+
+If true, then completion candidates will be sorted using the same algorithm used by
+`cmp-spell`. This can be helpful for sorting words that are partially typed. Otherwise,
+a custom sorting is used.
+
+> [!NOTE]
+> If this option is set to `true`, then it is recommended that the `fuzzy.sorts` table is
+> left to its default value.
+
 ### `enable_in_context` (`function`, default `function() return true end`)
 
 A function that, upon returning false, disables the completion source. This can
 be used to disable the spelling source when in a `@nospell` `treesitter`
 capture.
+
+
 
 ## Shoutout
 
