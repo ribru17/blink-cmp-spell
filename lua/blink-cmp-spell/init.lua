@@ -58,23 +58,24 @@ function M:candidates(input, max_entries)
 
   local entries = vim.fn.spellsuggest(input, max_entries)
 
-  if
-    self.preselect_current_word and vim.tbl_isempty(vim.spell.check(input))
-  then
-    offset = 1
-    loglen = len_to_loglen(#entries + offset)
-
-    cands[offset] = {
-      label = input,
-      insertText = input,
-      filterText = input,
-      kind = text_kind,
-      sortText = self.use_cmp_spell_sorting
-          and number_to_text(input, offset, loglen)
-        or '_',
-      preselect = true,
-    }
-
+  if vim.tbl_isempty(vim.spell.check(input)) then
+    if self.preselect_current_word then
+      offset = 1
+      loglen = len_to_loglen(#entries + offset)
+      cands[offset] = {
+        label = input,
+        insertText = input,
+        filterText = input,
+        kind = text_kind,
+        sortText = self.use_cmp_spell_sorting
+            and number_to_text(input, offset, loglen)
+          or '_',
+        preselect = true,
+      }
+    else
+      offset = 0
+      loglen = len_to_loglen(#entries + offset)
+    end
     if not self.keep_all_entries then
       return cands
     end
