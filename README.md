@@ -69,6 +69,22 @@ Neovim's `spellsuggest`.
 }
 ```
 
+> [!NOTE]
+> `vim.fn.spellsuggest` is really slow for some languages, for example German.
+> You can selectively disable this source, when German is configured in
+> 'spelllang' like so:
+> ```lua
+> {
+>   -- ...
+>   spell = {
+>     enabled = function()
+>       return not vim.list_contains(vim.opt_local.spelllang:get(), "de")
+>     end
+>   }
+>   -- ...
+> }
+> ```
+
 ## Options
 
 ### `max_entries` (`integer`, default `3`)
