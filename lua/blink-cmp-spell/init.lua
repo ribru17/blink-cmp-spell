@@ -21,13 +21,21 @@ local M = {}
 function M.new(opts)
   ---@type blink-cmp-spell.Source
   local config = vim.tbl_deep_extend('keep', opts or {}, defaults)
-  vim.validate {
-    max_entries = { config.max_entries, 'number' },
-    enable_in_context = { config.enable_in_context, 'function' },
-    preselect_current_word = { config.preselect_current_word, 'boolean' },
-    keep_all_entries = { config.keep_all_entries, 'boolean' },
-    use_cmp_spell_sorting = { config.use_cmp_spell_sorting, 'boolean' },
-  }
+  if vim.fn.has('nvim-0.11') == 1 then
+    vim.validate('max_entries', config.max_entries, 'number')
+    vim.validate('enable_in_context', config.enable_in_context, 'function')
+    vim.validate('preselect_current_word', config.preselect_current_word, 'boolean')
+    vim.validate('keep_all_entries', config.keep_all_entries, 'boolean')
+    vim.validate('use_cmp_spell_sorting', config.use_cmp_spell_sorting, 'boolean')
+  else
+    vim.validate {
+      max_entries = { config.max_entries, 'number' },
+      enable_in_context = { config.enable_in_context, 'function' },
+      preselect_current_word = { config.preselect_current_word, 'boolean' },
+      keep_all_entries = { config.keep_all_entries, 'boolean' },
+      use_cmp_spell_sorting = { config.use_cmp_spell_sorting, 'boolean' },
+    }
+  end
 
   return setmetatable(config, { __index = M })
 end
