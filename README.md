@@ -69,6 +69,47 @@ Neovim's `spellsuggest`.
 }
 ```
 
+> [!NOTE]
+> `vim.fn.spellsuggest` is really slow for some languages, for example German.
+> You can selectively disable this source, when German is configured in
+> 'spelllang' like so:
+>
+> ```lua
+> --- @type table<integer, boolean?>
+> local spell_enabled_cache = {}
+> 
+> vim.api.nvim_create_autocmd('OptionSet', {
+>   group = vim.api.nvim_create_augroup('blink_cmp_spell', {}),
+>   desc = 'Reset the cache for enabling the spell source for blink.cmp.',
+>   pattern = 'spelllang',
+>   callback = function()
+>     spell_enabled_cache[vim.fn.bufnr()] = nil
+>   end,
+> })
+> 
+> {
+>   'saghen/blink.cmp',
+>   dependencies = { 'ribru17/blink-cmp-spell' },
+>   opts = {
+>     sources = {
+>       providers = {
+>         spell = {
+>           enabled = function()
+>             local bufnr = vim.fn.bufnr()
+>             local enabled = spell_cache[bufnr]
+>             if type(enabled) ~= 'boolean' then
+>               enabled = not vim.list_contains(vim.opt_local.spelllang:get(), 'de')
+>               spell_cache[bufnr] = enabled
+>             end
+>             return enabled
+>           end,
+>         },
+>       },
+>     },
+>   },
+> }
+> ```
+
 ## Options
 
 ### `max_entries` (`integer`, default `3`)
